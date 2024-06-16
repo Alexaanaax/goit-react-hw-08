@@ -1,27 +1,48 @@
+import { useDispatch, useSelector } from "react-redux";
+import { MdDeleteForever, MdModeEdit } from "react-icons/md";
+import { FaPhoneAlt, FaUser } from "react-icons/fa";
+import {
+  setActiveContact,
+  clearActiveContact,
+} from "../../redux/contacts/slice";
 import css from "./Contact.module.css";
-import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsOps";
+import { IconButton } from "@mui/material";
 
+const Contact = ({ contact, modalOpenDelete }) => {
+  const dispatch = useDispatch();
 
-import { RiAccountPinCircleFill } from "react-icons/ri";
+  const { id, name, number } = contact;
 
-const Contact = ({ name, number, id }) => {
-    const dispatch = useDispatch();
+  const isModalOpen = useSelector((state) => state.contacts.isModalOpen);
 
-    const handleDelete = () => dispatch(deleteContact(id));
+  const handleEdit = () => {
+    if (!isModalOpen) {
+      dispatch(setActiveContact({ name, number, id }));
+    } else {
+      dispatch(clearActiveContact());
+    }
+  };
+
+  const handleDelete = () => {
+    modalOpenDelete(id);
+  };
 
   return (
     <div className={css.contact}>
-    <RiAccountPinCircleFill className={css.icon}  />
-      <p className={css.contactName}>{name}</p>
-      <p className={css.contactNumber}>{number}</p>
-      <button
-        className={css.deleteButton}
-        type="button"
-        onClick={() => dispatch(handleDelete)}
-      >
-        Delete
+      <div className={css.data}>
+        <p className={css.info}>
+          <FaUser className={css.infoIcon} /> {name}
+        </p>
+        <p className={css.info}>
+          <FaPhoneAlt className={css.infoIcon} /> {number}
+        </p>
+      </div>
+      <button className={css.button} type="button" onClick={handleEdit}>
+        <MdModeEdit className={css.pencil} />
       </button>
+      <IconButton variant="outlined" type="button" onClick={handleDelete}>
+        <MdDeleteForever className={css.bin} />
+      </IconButton>
     </div>
   );
 };
