@@ -1,6 +1,6 @@
 import ContactForm from "../ContactForm/ContactForm";
 import EditContactForm from "../EditContactForm/EditContactForm";
-import css from "./FormsWrap.module.css";
+import css from "./FromsWrap.module.css"
 
 const FormsWrap = () => {
   return (
